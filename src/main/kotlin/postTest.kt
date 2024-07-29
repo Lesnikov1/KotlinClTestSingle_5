@@ -6,22 +6,35 @@ data class Post(
     val published: Long,
     val likes: Int,
     val text: String,
-    val marked_as_ads: Boolean,
-    val created_by: Int,
-    val reply_post_id: Int,
-    val like: Likes
+    val markedAsAds: Boolean,
+    val createdBy: Int,
+    val replyPosId: Int,
+    var like: Likes = Likes()
 )
 
-class Likes(
+data class Likes(
     var count: Int = 0,
-    var can_post: Boolean = true,
-    var groups_can_post: Boolean = true,
-    var can_close: Boolean = true,
-    var can_open: Boolean = true
+    var can_post: Boolean = true
 )
 
 object WallService {
     private var posts = emptyArray<Post>()
+    private var lastId = 0
+
+    fun add(post: Post): Post {
+        posts += post.copy(id = ++lastId, like = post.like.copy())
+        return posts.last()
+    }
+
+    fun update(post: Post): Boolean {
+        for ((index, fromArrPost) in posts.withIndex()) {
+            if (fromArrPost.id == post.id) {
+                posts[index] = post.copy(like = post.like.copy())
+                return true
+            }
+        }
+        return false
+    }
 
     fun getPosts(): Array<Post> {
         return posts
@@ -31,28 +44,17 @@ object WallService {
         posts = emptyArray()
     }
 
-    fun add(post: Post): Post {
-        posts += post
-        return posts.last()
-    }
-
-    fun update(post: Post): Boolean {
-        for ((index, fromArrPost) in posts.withIndex()) {
-            if (fromArrPost.id == post.id) {
-                posts[index] = post.copy()
-                return true
-            }
+    fun printPosts() {
+        for (post in posts) {
+            print(post)
+            print(" ")
         }
-        return false
+        println()
     }
-
 }
 
 fun main() {
-//    val liked = post.copy(likes = post.likes + 1)
-//    val (id, authorId, _, content) = post
-//    println(post)
-//    println(post.likes)
-//    println(liked)
-//    println("$id, $authorId, $content" + post.text)
+    val likes = Likes(1, true)
+    WallService.add(Post(1, 2, "authorName", "content", 10, 5, "text", true, 5, 5, likes))
+    WallService.printPosts()
 }
