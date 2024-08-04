@@ -35,7 +35,7 @@ class WallTest {
     @Test
     fun noUpdateTestId() {
 
-        val post = Post(1, 1, "author", "conntent", 0, 0, "text", true, 0, 1, Likes())
+        var post = Post(1, 1, "author", "conntent", 0, 0, "text", true, 0, 1, Likes())
         val postTest = Post(2, 1, "author", "conntent", 0, 0, "text", true, 0, 1, Likes())
 
         WallService.add(post)
@@ -47,7 +47,7 @@ class WallTest {
     @Test
     fun UpdateTestId() {
 
-        val post = Post(    1, 1, "author", "content", 0, 0, "text", true, 0, 1, Likes())
+        var post = Post(    1, 1, "author", "content", 0, 0, "text", true, 0, 1, Likes())
         val postTest = Post(1, 1, "author", "content", 0, 0, "text", true, 0, 1, Likes())
 
         WallService.add(post)
